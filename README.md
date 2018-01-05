@@ -4,13 +4,17 @@ The wrapper provides convenient access to the Africa's Talking API from applicat
 ## Installing
 You can install the package by running:
 
+```
+go get github.com/AndroidStudyOpenSource/africastalking-go
+```
+
 ## Usage
 The package needs to be configured with your app username and API key (which you can get from the dashboard). You can also declare if you are running in production or in sandbox.
 
 ```
 const (
 	apiKey = ""		//Production or Sandbox API Key
-	username = ""	//Your Africa's Talking Username
+	username = ""	    //Your Africa's Talking Username
 	option = ""		// Choose either Sandbox or Production
 )
 ```
@@ -22,15 +26,19 @@ This is how we create the Gateway in our code:
 
 ```
 gateway, err := sms.NewGateway(username, apiKey, option)
-	if err != nil {
-		log.Fatal(err)
-	}
+if err != nil {
+	log.Fatal(err)
+}
 ```
 
 ## SMS 
 When sending a message, you need to pass the following data:
 * **Recipient(s)** 
 * **Message** 
+
+We invoke this function using the following code -  You can declare recipient and message as variables for code neatness:
+
+
 
 ## Contributing and Issues
 

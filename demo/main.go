@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	africastkng "github.com/AndroidStudyOpenSource/africastalking-go"
 )
@@ -10,18 +12,27 @@ import (
 const (
 	username = "" //Your Africa's Talking Username
 	apiKey   = "" //Production or Sandbox API Key
-	env      = "" // Choose either Sandbox or Production
 )
 
 func main() {
+	recipient := flag.String("r", "", "The phone number of the recipient of the message")
+	message := flag.String("m", "", "The message to be sent")
+	env := flag.String("e", "production", "The environment of the api")
+
+	flag.Parse()
+	if *recipient == "" || *message == "" {
+		log.Println("please enter recipient and message")
+		os.Exit(1)
+	}
+
 	//Call the Gateway, and pass the constants here!
-	gateway, err := africastkng.NewGateway(username, apiKey, env)
+	gateway, err := africastkng.NewGateway(username, apiKey, *env)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	//Send SMS - REPLACE Recipient and Message with REAL Values
-	recipients, err := gateway.SendSms("Recipient", "Message To Send")
+	// Entered at the commandline
+	recipients, err := gateway.SendSms(*recipient, *message)
 	if err != nil {
 		fmt.Println(err)
 	}

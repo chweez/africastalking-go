@@ -3,6 +3,7 @@ package africastalking
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -56,14 +57,10 @@ func NewGateway(username, apiKey, environment string) (*Gateway, error) {
 
 // SendSms sends an sms
 func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) {
-	return gateway.sendSms(recipients, message)
-}
-
-func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error) {
 	data := url.Values{}
 	data.Set("username", gateway.Username)
 	data.Set("to", recipients)
-	data.Set("message", messsage)
+	data.Set("message", message)
 	body := strings.NewReader(data.Encode())
 
 	client := &http.Client{}
@@ -82,6 +79,13 @@ func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error)
 		return nil, err
 	}
 
+	// make sure we have a response body
+	if response != nil && response.Body != nil {
+		return nil, fmt.Errorf("received empty response")
+	}
+
+	log.Println(response.Body)
+
 	var smsResponse SMSResponse
 	json.NewDecoder(response.Body).Decode(&smsResponse)
 	defer response.Body.Close()
@@ -90,7 +94,7 @@ func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error)
 		return smsResponse.SMSMessageData.Recipients, nil
 	}
 
-	return nil, fmt.Errorf("could not send sms message: %s", smsResponse.SMSMessageData.Message)
+	return nil, fmt.Errorf("could not send sms message: %s to: %s", message, recipients)
 }
 
 func (gateway Gateway) getAPIHost() string {

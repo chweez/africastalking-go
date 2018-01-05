@@ -1,11 +1,12 @@
 package africastalking
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 )
 
 var responseCode int
@@ -56,27 +57,23 @@ func NewGateway(username, apiKey, environment string) (*Gateway, error) {
 
 // SendSms sends an sms
 func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) {
-	sms := SMS{
-		gateway.username,
-		recipients,
-		message}
-	return gateway.sendSms(sms)
+	return gateway.sendSms(recipients, message)
 }
 
-func (gateway Gateway) sendSms(sms SMS) ([]Recipient, error) {
-	smsBytes, err := json.Marshal(sms)
-	if err != nil {
-		return nil, err
-	}
+func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error) {
+	data := url.Values{}
+	data.Set("username", gateway.username)
+	data.Set("to", recipients)
+	data.Set("message", messsage)
+	body := strings.NewReader(data.Encode())
 
-	body := bytes.NewBuffer(smsBytes)
 	client := &http.Client{}
 	r, err := http.NewRequest("POST", gateway.getSmsURL(), body)
 	if err != nil {
 		return nil, err
 	}
 
-	r.Header.Add("Content-Type", "application/json")
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	r.Header.Add("Accept", "application/json")
 	r.Header.Add("Content-Length", strconv.Itoa(body.Len()))
 	r.Header.Add("apikey", gateway.apiKey)

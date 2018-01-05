@@ -16,9 +16,9 @@ const contentJSON = "application/json"
 
 // Gateway is a Gateway
 type Gateway struct {
-	username    string
-	apiKey      string
-	environment string
+	Username    string
+	APIKey      string
+	Environment string
 }
 
 // SMS is an sms
@@ -62,7 +62,7 @@ func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) 
 
 func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error) {
 	data := url.Values{}
-	data.Set("username", gateway.username)
+	data.Set("username", gateway.Username)
 	data.Set("to", recipients)
 	data.Set("message", messsage)
 	body := strings.NewReader(data.Encode())
@@ -76,7 +76,7 @@ func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error)
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	r.Header.Add("Accept", "application/json")
 	r.Header.Add("Content-Length", strconv.Itoa(body.Len()))
-	r.Header.Add("apikey", gateway.apiKey)
+	r.Header.Add("apikey", gateway.APIKey)
 
 	response, err := client.Do(r)
 	if err != nil {
@@ -95,7 +95,7 @@ func (gateway Gateway) sendSms(recipients, messsage string) ([]Recipient, error)
 }
 
 func (gateway Gateway) getAPIHost() string {
-	if gateway.environment == "sandbox" {
+	if gateway.Environment == "sandbox" {
 		return "https://api.sandbox.africastalking.com"
 	}
 

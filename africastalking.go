@@ -31,8 +31,15 @@ type SMSResponse struct {
 
 // SMSMessageData is a SMSMessageData
 type SMSMessageData struct {
-	Recipients []string
+	Recipients []Recipient
 	Message    string
+}
+
+// Recipient is a recipient
+type Recipient struct {
+	Number string
+	Cost   string
+	Status string
 }
 
 // NewGateway creates a new instance of Gateway and return it or an error
@@ -45,7 +52,7 @@ func NewGateway(username, apiKey, environment string) (*Gateway, error) {
 }
 
 // SendSms sends an sms
-func (gateway Gateway) SendSms(recipients, message string) ([]string, error) {
+func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) {
 	sms := SMS{
 		gateway.username,
 		recipients,
@@ -53,7 +60,7 @@ func (gateway Gateway) SendSms(recipients, message string) ([]string, error) {
 	return gateway.sendSms(sms)
 }
 
-func (gateway Gateway) sendSms(sms SMS) ([]string, error) {
+func (gateway Gateway) sendSms(sms SMS) ([]Recipient, error) {
 	body, err := json.Marshal(sms)
 	if err != nil {
 		return nil, err

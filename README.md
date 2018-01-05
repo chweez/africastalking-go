@@ -1,5 +1,5 @@
-# Africa's Talking Golang API Wrapper
-The wrapper provides convenient access to the Africa's Talking API from applications written in server-side Golang.
+# Unofficial Africa's Talking Golang API Wrapper
+The wrapper provides convenient access to the Africa's Talking API from applications written in server-side Golang. This is Work in Progress
 
 ## Installing
 You can install the package by running:
@@ -15,7 +15,7 @@ The package needs to be configured with your app username and API key (which you
 const (
 	apiKey = "YOUR_API_KEY"		    //Production or Sandbox API Key
 	username = "YOUR_USERNAME"	    //Your Africa's Talking Username
-	option = ""		              // Choose either Sandbox or Production
+	env = ""		                // Choose either Sandbox or Production
 )
 ```
 
@@ -25,7 +25,7 @@ We first need to create a Gateway using the constants declared above. We will us
 This is how we create the Gateway in our code:
 
 ```
-gateway, err := africastkng.NewGateway(username, apiKey, option)
+gateway, err := africastkng.NewGateway(username, apiKey, env)
 if err != nil {
 	log.Fatal(err)
 }
@@ -65,7 +65,7 @@ import (
 const (
 	username = "" //Your Africa's Talking Username
 	apiKey   = "" //Production or Sandbox API Key
-	option   = "" // Choose either Sandbox or Production
+	env   = "" // Choose either Sandbox or Production
 )
 
 func main() {

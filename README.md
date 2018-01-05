@@ -15,7 +15,7 @@ The package needs to be configured with your app username and API key (which you
 const (
 	apiKey = "YOUR_API_KEY"		    //Production or Sandbox API Key
 	username = "YOUR_USERNAME"	    //Your Africa's Talking Username
-	option = ""		              // Choose either Sandbox or Production
+	env = ""		              // Choose either Sandbox or Production
 )
 ```
 
@@ -25,7 +25,7 @@ We first need to create a Gateway using the constants declared above. We will us
 This is how we create the Gateway in our code:
 
 ```
-gateway, err := africastkng.NewGateway(username, apiKey, option)
+gateway, err := africastkng.NewGateway(username, apiKey, env)
 if err != nil {
 	log.Fatal(err)
 }

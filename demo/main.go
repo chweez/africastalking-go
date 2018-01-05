@@ -10,12 +10,12 @@ import (
 const (
 	username = "" //Your Africa's Talking Username
 	apiKey   = "" //Production or Sandbox API Key
-	option   = "" // Choose either Sandbox or Production
+	env      = "" // Choose either Sandbox or Production
 )
 
 func main() {
 	//Call the Gateway, and pass the constants here!
-	gateway, err := africastkng.NewGateway(username, apiKey, option)
+	gateway, err := africastkng.NewGateway(username, apiKey, env)
 	if err != nil {
 		log.Fatal(err)
 	}

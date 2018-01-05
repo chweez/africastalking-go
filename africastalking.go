@@ -3,7 +3,6 @@ package africastalking
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -83,8 +82,6 @@ func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) 
 	if response == nil || response.Body == nil {
 		return nil, fmt.Errorf("received empty response")
 	}
-
-	log.Println(response.Body)
 
 	var smsResponse SMSResponse
 	json.NewDecoder(response.Body).Decode(&smsResponse)

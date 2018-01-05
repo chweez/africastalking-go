@@ -80,7 +80,7 @@ func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) 
 	}
 
 	// make sure we have a response body
-	if response != nil && response.Body != nil {
+	if response == nil && response.Body == nil {
 		return nil, fmt.Errorf("received empty response")
 	}
 

@@ -10,7 +10,7 @@ import (
 const (
 	username = "" //Your Africa's Talking Username
 	apiKey   = "" //Production or Sandbox API Key
-	env	   = "" // Choose either Sandbox or Production
+	env      = "" // Choose either Sandbox or Production
 )
 
 func main() {

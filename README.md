@@ -70,7 +70,7 @@ const (
 
 func main() {
 	//Call the Gateway, and pass the constants here!
-	gateway, err := africastkng.NewGateway(username, apiKey, option)
+	gateway, err := africastkng.NewGateway(username, apiKey, env)
 	if err != nil {
 		log.Fatal(err)
 	}

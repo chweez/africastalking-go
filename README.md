@@ -15,7 +15,7 @@ The package needs to be configured with your app username and API key (which you
 const (
 	apiKey = "YOUR_API_KEY"		    //Production or Sandbox API Key
 	username = "YOUR_USERNAME"	    //Your Africa's Talking Username
-	option = ""		                // Choose either Sandbox or Production
+	option = ""		              // Choose either Sandbox or Production
 )
 ```
 

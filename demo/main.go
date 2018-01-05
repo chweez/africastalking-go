@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	apiKey   = "6108b25d63a8fa8db3c5fd40a57df0a4f1b139b718ffd06fa4ebdf416a159bf0"
-	username = "Me4u"
+	apiKey   = ""
+	username = ""
 )
 
 func main() {

@@ -88,6 +88,7 @@ func main() {
 }
 
 ```
+You can easily test this using [Postman](https://www.getpostman.com) or [Insomnia](https://insomnia.rest) Clients!
 
 ## Contributing and Issues
 

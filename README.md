@@ -13,9 +13,9 @@ The package needs to be configured with your app username and API key (which you
 
 ```
 const (
-	apiKey = ""		//Production or Sandbox API Key
-	username = ""	    //Your Africa's Talking Username
-	option = ""		// Choose either Sandbox or Production
+	apiKey = "YOUR_API_KEY"		    //Production or Sandbox API Key
+	username = "YOUR_USERNAME"	    //Your Africa's Talking Username
+	option = ""		                // Choose either Sandbox or Production
 )
 ```
 
@@ -49,6 +49,44 @@ if err != nil {
 for _, recipient := range recipients {
 	fmt.Println(recipient)
 }
+```
+
+This is the complete sample code. Try to understand how this works first!!!
+```
+package main
+
+import (
+	"fmt"
+	"log"
+
+	africastkng "github.com/AndroidStudyOpenSource/africastalking-go"
+)
+
+const (
+	username = "" //Your Africa's Talking Username
+	apiKey   = "" //Production or Sandbox API Key
+	option   = "" // Choose either Sandbox or Production
+)
+
+func main() {
+	//Call the Gateway, and pass the constants here!
+	gateway, err := africastkng.NewGateway(username, apiKey, option)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//Send SMS - REPLACE Recipient and Message with REAL Values
+	recipients, err := gateway.SendSms("Recipient", "Message To Send")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//For loop to log all the recipients
+	for _, recipient := range recipients {
+		fmt.Println(recipient)
+	}
+}
+
 ```
 
 ## Contributing and Issues

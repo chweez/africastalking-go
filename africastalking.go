@@ -1,9 +1,12 @@
 package africastalking
 
-import "net/http"
-import "encoding/json"
-import "fmt"
-import "bytes"
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
+)
 
 var responseCode int
 
@@ -61,12 +64,24 @@ func (gateway Gateway) SendSms(recipients, message string) ([]Recipient, error) 
 }
 
 func (gateway Gateway) sendSms(sms SMS) ([]Recipient, error) {
-	body, err := json.Marshal(sms)
+	smsBytes, err := json.Marshal(sms)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := http.Post(gateway.getSmsURL(), contentJSON, bytes.NewBuffer(body))
+	body := bytes.NewBuffer(smsBytes)
+	client := &http.Client{}
+	r, err := http.NewRequest("POST", gateway.getSmsURL(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	r.Header.Add("Content-Type", "application/json")
+	r.Header.Add("Accept", "application/json")
+	r.Header.Add("Content-Length", strconv.Itoa(body.Len()))
+	r.Header.Add("apikey", gateway.apiKey)
+
+	response, err := client.Do(r)
 	if err != nil {
 		return nil, err
 	}

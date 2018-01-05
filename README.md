@@ -25,7 +25,7 @@ We first need to create a Gateway using the constants declared above. We will us
 This is how we create the Gateway in our code:
 
 ```
-gateway, err := sms.NewGateway(username, apiKey, option)
+gateway, err := africastkng.NewGateway(username, apiKey, option)
 if err != nil {
 	log.Fatal(err)
 }
@@ -38,7 +38,18 @@ When sending a message, you need to pass the following data:
 
 We invoke this function using the following code -  You can declare recipient and message as variables for code neatness:
 
+```
+//Send SMS - REPLACE Recipient and Message with REAL Values
+recipients, err := gateway.SendSms("Recipient", "Message To Send")
+if err != nil {
+	fmt.Println(err)
+}
 
+//For loop to log all the recipients
+for _, recipient := range recipients {
+	fmt.Println(recipient)
+}
+```
 
 ## Contributing and Issues
 

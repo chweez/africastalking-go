@@ -1,16 +1,33 @@
-package main 
+package main
 
-const (
-	username = ""	//Your Africa's Talking Username
-	apiKey = ""		//Production or Sandbox API Key
-	option = ""		// Choose either Sandbox or Production
+import (
+	"fmt"
+	"log"
+
+	africastkng "github.com/AndroidStudyOpenSource/africastalking-go"
 )
 
-func main (){
-	gateway, err := sms.NewGateway(username, apiKey, option)
+const (
+	username = "" //Your Africa's Talking Username
+	apiKey   = "" //Production or Sandbox API Key
+	option   = "" // Choose either Sandbox or Production
+)
+
+func main() {
+	//Call the Gateway, and pass the constants here!
+	gateway, err := africastkng.NewGateway(username, apiKey, option)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	gateway.
+	//Send SMS - REPLACE Recipient and Message with REAL Values
+	recipients, err := gateway.SendSms("Recipient", "Message To Send")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//For loop to log all the recipients
+	for _, recipient := range recipients {
+		fmt.Println(recipient)
+	}
 }

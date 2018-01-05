@@ -11,7 +11,6 @@ import (
 
 var responseCode int
 
-const debug = false
 const contentJSON = "application/json"
 
 // Gateway is a Gateway

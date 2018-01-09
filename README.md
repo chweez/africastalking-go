@@ -1,5 +1,7 @@
 # Unofficial Africa's Talking Golang API Wrapper
-The wrapper provides convenient access to the Africa's Talking API from applications written in server-side Golang. This is Work in Progress
+The wrapper provides convenient access to the Africa's Talking API from applications written in server-side Golang. 
+
+**This is Work in Progress!**
 
 ## Installing
 You can install the package by running:

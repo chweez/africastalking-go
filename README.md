@@ -11,7 +11,7 @@ go get github.com/AndroidStudyOpenSource/africastalking-go
 ```
 
 ## Usage
-The package needs to be configured with your app username and API key (which you can get from the dashboard). You can also declare if you are running in production or in sandbox.
+The package needs to be configured with your app **username** and **API key** (which you can get from the dashboard). You can also declare if you are running in production or in sandbox.
 
 ```
 const (

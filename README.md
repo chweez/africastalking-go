@@ -6,6 +6,12 @@ You can install the package by running:
 
 ```
 go get github.com/AndroidStudyOpenSource/africastalking-go
+
+go get github.com/AndroidStudyOpenSource/africastalking-go/airtime
+
+go get github.com/AndroidStudyOpenSource/africastalking-go/account
+
+go get github.com/AndroidStudyOpenSource/africastalking-go/payment
 ```
 
 ## Usage

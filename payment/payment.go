@@ -21,11 +21,16 @@ func NewService() Service {
 }
 
 // RequestB2C sends a B2C request
-func (service Service) RequestB2C(body map[string]interface{}) (*B2CResponse, error) {
+func (service Service) RequestB2C(body B2CRequest) (*B2CResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/mobile/b2c/request"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal b2c req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -37,11 +42,16 @@ func (service Service) RequestB2C(body map[string]interface{}) (*B2CResponse, er
 }
 
 // RequestB2B sends a B2B request
-func (service Service) RequestB2B(body map[string]interface{}) (*B2BResponse, error) {
+func (service Service) RequestB2B(body B2BRequest) (*B2BResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/mobile/b2b/request"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal b2b req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -53,11 +63,16 @@ func (service Service) RequestB2B(body map[string]interface{}) (*B2BResponse, er
 }
 
 // MobileCheckout requests
-func (service Service) MobileCheckout(body map[string]interface{}) (*CheckoutResponse, error) {
+func (service Service) MobileCheckout(body MobileCheckoutRequest) (*CheckoutResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/mobile/checkout/request"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal mobile checkout req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -69,11 +84,16 @@ func (service Service) MobileCheckout(body map[string]interface{}) (*CheckoutRes
 }
 
 // CardCheckoutCharge requests
-func (service Service) CardCheckoutCharge(body map[string]interface{}) (*CheckoutResponse, error) {
+func (service Service) CardCheckoutCharge(body CardCheckoutRequest) (*CheckoutResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/card/checkout/charge"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal card checkout req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -85,11 +105,16 @@ func (service Service) CardCheckoutCharge(body map[string]interface{}) (*Checkou
 }
 
 // CardCheckoutValidate requests
-func (service Service) CardCheckoutValidate(body map[string]interface{}) (*CheckoutValidateResponse, error) {
+func (service Service) CardCheckoutValidate(body CardValidateCheckoutRequest) (*CheckoutValidateResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/card/checkout/validate"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal card validate checkout req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -101,11 +126,16 @@ func (service Service) CardCheckoutValidate(body map[string]interface{}) (*Check
 }
 
 // BankCheckoutCharge requests
-func (service Service) BankCheckoutCharge(body map[string]interface{}) (*CheckoutResponse, error) {
+func (service Service) BankCheckoutCharge(body BankCheckoutRequest) (*CheckoutResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/bank/checkout/charge"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal bank checkout charge req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -117,11 +147,16 @@ func (service Service) BankCheckoutCharge(body map[string]interface{}) (*Checkou
 }
 
 // BankCheckoutValidate requests
-func (service Service) BankCheckoutValidate(body map[string]interface{}) (*CheckoutValidateResponse, error) {
+func (service Service) BankCheckoutValidate(body BankValidateCheckoutRequest) (*CheckoutValidateResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/bank/checkout/validate"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal bank validate checkout req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -133,11 +168,16 @@ func (service Service) BankCheckoutValidate(body map[string]interface{}) (*Check
 }
 
 // BankTransfer requests
-func (service Service) BankTransfer(body map[string]interface{}) (*BankTransferResponse, error) {
+func (service Service) BankTransfer(body BankTransferRequest) (*BankTransferResponse, error) {
 	host := util.GetAPIHost(service.Env)
 	url := host + "/bank/transfer"
 
-	response, err := service.newRequest(url, body)
+	reqBody, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal bank transfer req body %v: ", err)
+	}
+
+	response, err := service.newRequest(url, reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -148,13 +188,9 @@ func (service Service) BankTransfer(body map[string]interface{}) (*BankTransferR
 	return &btr, nil
 }
 
-func (service Service) newRequest(url string, body map[string]interface{}) (*http.Response, error) {
-	reqBody, err := json.Marshal(body)
-	if err != nil {
-		return nil, fmt.Errorf("could not convert map to body: %v", err)
-	}
+func (service Service) newRequest(url string, body []byte) (*http.Response, error) {
 
-	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(reqBody))
+	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}

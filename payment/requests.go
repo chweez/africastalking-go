@@ -48,3 +48,21 @@ type CardCheckoutRequest struct {
 type CardValidateCheckoutRequest struct {
 	CheckoutValidateRequest
 }
+
+// BankCheckoutRequest is just a req
+type BankCheckoutRequest struct {
+	CheckoutRequest
+	BankAccount BankAccount `json:"bankAccount"`
+}
+
+// BankValidateCheckoutRequest is a req
+type BankValidateCheckoutRequest struct {
+	CheckoutValidateRequest
+}
+
+// BankTransferRequest is a req
+type BankTransferRequest struct {
+	Username    string `json:"username"`
+	ProductName string `json:"productName"`
+	Recipients  []Bank `json:"recipients"`
+}

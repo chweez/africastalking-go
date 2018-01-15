@@ -5,67 +5,17 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
 	"africastalking/util"
 )
 
-// SendMessageResponse is a model
-type SendMessageResponse struct {
-	SMS SMS2 `json:"SMSMessageData"`
-}
-
-// SMS2 is a model
-type SMS2 struct {
-	Recipients []Recipient `json:"recipients"`
-}
-
-// SubscriptionResponse is a model
-type SubscriptionResponse struct {
-	Success     string `json:"success"`
-	Description string `json:"description"`
-}
-
-// FetchMessageResponse is a model
-type FetchMessageResponse struct {
-	SMS SMS `json:"SMSMessageData"`
-}
-
-// SMS is a model
-type SMS struct {
-	Messages []Message `json:"Recipients"`
-}
-
-// Message is a model
-type Message struct {
-	From   string `json:"from"`
-	To     string `json:"to"`
-	Text   string `json:"text"`
-	LinkID string `json:"linkId"`
-	Date   string `json:"date"`
-	ID     int64  `json:"id"`
-}
-
-// FetchSubscriptionResponse is a model
-type FetchSubscriptionResponse struct {
-	Subscriptions []Subscription
-}
-
-// Subscription is a model
-type Subscription struct {
-	ID          int64  `json:"id"`
-	PhoneNumber string `json:"phoneNumber"`
-	Date        string `json:"date"`
-}
-
-// Recipient is a model
-type Recipient struct {
-	Number    string `json:"number"`
-	Cost      string `json:"cost"`
-	Status    string `json:"status"`
-	MessageID string `json:"messageId"`
-}
+const (
+	Sandbox = "sandbox"
+	Prod    = "production"
+)
 
 // Service is a model
 type Service struct {
@@ -75,8 +25,8 @@ type Service struct {
 }
 
 // NewService returns a new service
-func NewService() Service {
-	return Service{}
+func NewService(username, apiKey, env string) Service {
+	return Service{username, apiKey, env}
 }
 
 // SendToMany is a utility method to send to many recipients at the same time
@@ -235,7 +185,9 @@ func (service Service) CreateSubscription(username, shortCode, keyword, phoneNum
 }
 
 func (service Service) newPostRequest(url string, values url.Values, headers map[string]string) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodPost, url, strings.NewReader(values.Encode()))
+	reader := strings.NewReader(values.Encode())
+
+	req, err := http.NewRequest(http.MethodPost, url, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -243,6 +195,7 @@ func (service Service) newPostRequest(url string, values url.Values, headers map
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
+	req.Header.Set("Content-Length", strconv.Itoa(reader.Len()))
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	return client.Do(req)

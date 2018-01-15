@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	africastkng "github.com/AndroidStudyOpenSource/africastalking-go"
+	"africastalking/sms"
 )
 
 const (
@@ -25,20 +25,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	//Call the Gateway, and pass the constants here!
-	gateway, err := africastkng.NewGateway(username, apiKey, *env)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	smsService := sms.NewService(username, apiKey, *env)
 	// Entered at the commandline
-	recipients, err := gateway.SendSms(*recipient, *message)
+	sendResponse, err := smsService.Send("Me4u", *recipient, *message)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	//For loop to log all the recipients
-	for _, recipient := range recipients {
-		fmt.Println(recipient)
-	}
+	fmt.Println(sendResponse)
 }

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 // Service is a service
@@ -16,8 +17,8 @@ type Service struct {
 }
 
 // NewService creates a new Service
-func NewService() Service {
-	return Service{}
+func NewService(username, apiKey, env string) Service {
+	return Service{username, apiKey, env}
 }
 
 // RequestB2C sends a B2C request
@@ -189,8 +190,8 @@ func (service Service) BankTransfer(body BankTransferRequest) (*BankTransferResp
 }
 
 func (service Service) newRequest(url string, body []byte) (*http.Response, error) {
-
-	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
+	buffer := bytes.NewBuffer(body)
+	request, err := http.NewRequest(http.MethodPost, url, buffer)
 	if err != nil {
 		return nil, err
 	}
@@ -198,6 +199,7 @@ func (service Service) newRequest(url string, body []byte) (*http.Response, erro
 	request.Header.Set("apiKey", service.APIKey)
 	request.Header.Set("Accept", "application/json")
 	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Content-Length", strconv.Itoa(buffer.Len()))
 
 	client := &http.Client{}
 	return client.Do(request)

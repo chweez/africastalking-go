@@ -16,7 +16,6 @@ func GetAPIHost(env string) string {
 	if env == "sandbox" {
 		return "https://api.sandbox.africastalking.com"
 	}
-
 	// env == "production"
 	return "https://api.africastalking.com"
 }

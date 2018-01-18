@@ -24,8 +24,7 @@ func NewService(username, apiKey, env string) Service {
 
 // RequestB2C sends a B2C request
 func (service Service) RequestB2C(body B2CRequest) (*B2CResponse, error) {
-	host := util.GetAPIHost(service.Env)
-	url := host + "/mobile/b2c/request"
+	url := util.GetMobilePaymentB2CUrl(service.Env)
 
 	reqBody, err := json.Marshal(body)
 	if err != nil {
@@ -45,8 +44,7 @@ func (service Service) RequestB2C(body B2CRequest) (*B2CResponse, error) {
 
 // RequestB2B sends a B2B request
 func (service Service) RequestB2B(body B2BRequest) (*B2BResponse, error) {
-	host := util.GetAPIHost(service.Env)
-	url := host + "/mobile/b2b/request"
+	url := util.GetMobilePaymentB2BUrl(service.Env)
 
 	reqBody, err := json.Marshal(body)
 	if err != nil {
@@ -66,8 +64,7 @@ func (service Service) RequestB2B(body B2BRequest) (*B2BResponse, error) {
 
 // MobileCheckout requests
 func (service Service) MobileCheckout(body MobileCheckoutRequest) (*CheckoutResponse, error) {
-	host := util.GetAPIHost(service.Env)
-	url := host + "/mobile/checkout/request"
+	url := util.GetMobilePaymentCheckoutUrl(service.Env)
 
 	reqBody, err := json.Marshal(body)
 	if err != nil {
@@ -87,7 +84,7 @@ func (service Service) MobileCheckout(body MobileCheckoutRequest) (*CheckoutResp
 
 // CardCheckoutCharge requests
 func (service Service) CardCheckoutCharge(body CardCheckoutRequest) (*CheckoutResponse, error) {
-	host := util.GetAPIHost(service.Env)
+	host := util.GetPaymentHost(service.Env)
 	url := host + "/card/checkout/charge"
 
 	reqBody, err := json.Marshal(body)
@@ -108,7 +105,7 @@ func (service Service) CardCheckoutCharge(body CardCheckoutRequest) (*CheckoutRe
 
 // CardCheckoutValidate requests
 func (service Service) CardCheckoutValidate(body CardValidateCheckoutRequest) (*CheckoutValidateResponse, error) {
-	host := util.GetAPIHost(service.Env)
+	host := util.GetPaymentHost(service.Env)
 	url := host + "/card/checkout/validate"
 
 	reqBody, err := json.Marshal(body)
@@ -129,7 +126,7 @@ func (service Service) CardCheckoutValidate(body CardValidateCheckoutRequest) (*
 
 // BankCheckoutCharge requests
 func (service Service) BankCheckoutCharge(body BankCheckoutRequest) (*CheckoutResponse, error) {
-	host := util.GetAPIHost(service.Env)
+	host := util.GetPaymentHost(service.Env)
 	url := host + "/bank/checkout/charge"
 
 	reqBody, err := json.Marshal(body)
@@ -150,7 +147,7 @@ func (service Service) BankCheckoutCharge(body BankCheckoutRequest) (*CheckoutRe
 
 // BankCheckoutValidate requests
 func (service Service) BankCheckoutValidate(body BankValidateCheckoutRequest) (*CheckoutValidateResponse, error) {
-	host := util.GetAPIHost(service.Env)
+	host := util.GetPaymentHost(service.Env)
 	url := host + "/bank/checkout/validate"
 
 	reqBody, err := json.Marshal(body)
@@ -171,7 +168,7 @@ func (service Service) BankCheckoutValidate(body BankValidateCheckoutRequest) (*
 
 // BankTransfer requests
 func (service Service) BankTransfer(body BankTransferRequest) (*BankTransferResponse, error) {
-	host := util.GetAPIHost(service.Env)
+	host := util.GetPaymentHost(service.Env)
 	url := host + "/bank/transfer"
 
 	reqBody, err := json.Marshal(body)

@@ -194,7 +194,7 @@ func (service Service) newRequest(url string, body []byte) (*http.Response, erro
 		return nil, err
 	}
 
-	request.Header.Set("apiKey", service.APIKey)
+	request.Header.Set("apikey", service.APIKey)
 	request.Header.Set("Accept", "application/json")
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Content-Length", strconv.Itoa(buffer.Len()))

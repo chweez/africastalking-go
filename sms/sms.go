@@ -198,7 +198,7 @@ func (service Service) newPostRequest(url string, values url.Values, headers map
 		req.Header.Set(key, value)
 	}
 	req.Header.Set("Content-Length", strconv.Itoa(reader.Len()))
-	req.Header.Set("apiKey", service.APIKey)
+	req.Header.Set("apikey", service.APIKey)
 	req.Header.Set("Accept", "application/json")
 
 	client := &http.Client{Timeout: 10 * time.Second}
@@ -215,7 +215,7 @@ func (service Service) newGetRequest(url string, queries map[string]string) (*ht
 	for key, value := range queries {
 		values.Add(key, value)
 	}
-	req.Header.Set("apiKey", service.APIKey)
+	req.Header.Set("apikey", service.APIKey)
 	req.Header.Set("Accept", "application/json")
 	req.URL.RawQuery = values.Encode()
 

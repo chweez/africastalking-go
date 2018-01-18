@@ -51,7 +51,7 @@ func (service Service) Send() (*Response, error) {
 	q := request.URL.Query()
 	q.Add("username", service.Username)
 	request.URL.RawQuery = q.Encode()
-	request.Header.Set("apiKey", service.APIKey)
+	request.Header.Set("apikey", service.APIKey)
 	request.Header.Set("Accept", "application/json")
 
 	client := &http.Client{Timeout: 10 * time.Second}

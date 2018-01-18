@@ -18,7 +18,7 @@ func GetAPIHost(env string) string {
 	}
 
 	// env == "production"
-	return "https://africastalking.com"
+	return "https://api.africastalking.com"
 }
 
 // GetSmsURL is the sms endpoint

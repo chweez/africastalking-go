@@ -3,6 +3,7 @@ package sms
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -54,6 +55,7 @@ func (service Service) Send(from, to, message string) (*SendMessageResponse, err
 
 	var smsMessageResponse SendMessageResponse
 	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
+	log.Println(res.Body)
 	defer res.Body.Close()
 
 	return &smsMessageResponse, nil
@@ -196,6 +198,8 @@ func (service Service) newPostRequest(url string, values url.Values, headers map
 		req.Header.Set(key, value)
 	}
 	req.Header.Set("Content-Length", strconv.Itoa(reader.Len()))
+	req.Header.Set("apiKey", service.APIKey)
+	req.Header.Set("Accept", "application/json")
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	return client.Do(req)
@@ -211,6 +215,8 @@ func (service Service) newGetRequest(url string, queries map[string]string) (*ht
 	for key, value := range queries {
 		values.Add(key, value)
 	}
+	req.Header.Set("apiKey", service.APIKey)
+	req.Header.Set("Accept", "application/json")
 	req.URL.RawQuery = values.Encode()
 
 	client := &http.Client{Timeout: 10 * time.Second}

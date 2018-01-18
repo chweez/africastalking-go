@@ -25,6 +25,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	send(*recipient, "202020", *env)
 	smsService := sms.NewService(username, apiKey, *env)
 	// Entered at the commandline
 	sendResponse, err := smsService.Send("Me4u", *recipient, *message)

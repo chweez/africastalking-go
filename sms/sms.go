@@ -41,8 +41,11 @@ func (service Service) Send(from, to, message string) (*SendMessageResponse, err
 	values := url.Values{}
 	values.Set("username", service.Username)
 	values.Set("to", to)
-	values.Set("from", from)
 	values.Set("message", message)
+	if from != "" {
+		// set from = "" to avoid this
+		values.Set("from", from)
+	}
 
 	url := util.GetSmsURL(service.Env)
 	headers := make(map[string]string)

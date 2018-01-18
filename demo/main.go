@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"africastalking/sms"
+	"github.com/AndroidStudyOpenSource/africastalking-go/sms"
 )
 
 const (

@@ -1,12 +1,13 @@
 package payment
 
 import (
-	"africastalking/util"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/AndroidStudyOpenSource/africastalking-go/util"
 )
 
 // Service is a service

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"africastalking/util"
+	"github.com/AndroidStudyOpenSource/africastalking-go/util"
 )
 
 const (

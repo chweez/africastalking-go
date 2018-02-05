@@ -3,6 +3,7 @@ package payment
 import (
 	"regexp"
 	"time"
+	"strconv"
 )
 
 const (
@@ -53,57 +54,57 @@ const (
 
 // Bank is a.. Bank
 type Bank struct {
-	CurrencyCode string
-	Amount       float64
-	BankAccount  BankAccount
-	Narration    string
-	Metadata     map[string]string
+	CurrencyCode string            `json:"currencyCode"`
+	Amount       float64           `json:"amount"`
+	BankAccount  BankAccount       `json:"bankAccount"`
+	Narration    string            `json:"narration"`
+	Metadata     map[string]string `json:"metadata"`
 }
 
 // BankAccount is a model
 type BankAccount struct {
-	AccountName   string
-	AccountNumber string
-	BankCode      BankCode
-	DateOfBirth   string
+	AccountName   string   `json:"accountName"`
+	AccountNumber string   `json:"accountNumber"`
+	BankCode      BankCode `json:"bankCode"`
+	DateOfBirth   string   `json:"dateOfBirth"`
 }
 
 // Business is a business
 type Business struct {
-	CurrencyCode       string
-	Amount             float64
-	Provider           string
-	TransferType       string
-	DestinationChannel string
-	DestinationAccount string
-	Metadata           map[string]string
+	CurrencyCode       string            `json:"currencyCode"`
+	Amount             float64           `json:"amount"`
+	Provider           string            `json:"provider"`
+	TransferType       string            `json:"transferType"`
+	DestinationChannel string            `json:"destinationChannel"`
+	DestinationAccount string            `json:"destinationAccount"`
+	Metadata           map[string]string `json:"metadata"`
 }
 
 // Consumer is a model
 type Consumer struct {
-	Name            string
-	PhoneNumber     string
-	CurrencyCode    string
-	Amount          float64
-	ProviderChannel string
-	Reason          string
-	Metadata        map[string]string
+	Name            string            `json:"name"`
+	PhoneNumber     string            `json:"phoneNumber"`
+	CurrencyCode    string            `json:"currencyCode"`
+	Amount          float64           `json:"amount"`
+	ProviderChannel string            `json:"providerChannel"`
+	Reason          string            `json:"reason"`
+	Metadata        map[string]string `json:"metadata"`
 }
 
 // Card is a model
 type Card struct {
-	Number      string
-	CVVNumber   int
-	ExpiryMonth int
-	ExpiryYear  int
-	CountryCOde string
-	AuthToken   string
+	Number      string `json:"number"`
+	CVVNumber   int    `json:"cvvNumber"`
+	ExpiryMonth int    `json:"expiryMonth"`
+	ExpiryYear  int    `json:"expiryYear"`
+	CountryCode string `json:"countryCode"`
+	AuthToken   string `json:"authToken"`
 }
 
 var numberPattern, cvvPattern, countryCodePattern *regexp.Regexp
 
 func init() {
-	// ignore errors here, hope it won't back us in the back hehe
+	// ignore errors here, hope it won't bite us in the back
 	numberPattern, _ = regexp.Compile("^\\d{12,19}$")
 	cvvPattern, _ = regexp.Compile("^\\d{3,4}$")
 	countryCodePattern, _ = regexp.Compile("^[A-Z]{2}$")
@@ -114,12 +115,11 @@ func (card Card) IsValid() bool {
 	if !numberPattern.MatchString(card.Number) {
 		return false
 	}
-
-	if !cvvPattern.MatchString(string(card.CVVNumber)) {
+	if !cvvPattern.MatchString(strconv.Itoa(card.CVVNumber)) {
 		return false
 	}
 
-	if !countryCodePattern.MatchString(string(card.CountryCOde)) {
+	if !countryCodePattern.MatchString(card.CountryCode) {
 		return false
 	}
 

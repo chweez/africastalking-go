@@ -84,6 +84,10 @@ func (service Service) MobileCheckout(body MobileCheckoutRequest) (*CheckoutResp
 
 // CardCheckoutCharge requests
 func (service Service) CardCheckoutCharge(body CardCheckoutRequest) (*CheckoutResponse, error) {
+	if !body.Card.IsValid() {
+		return nil, fmt.Errorf("card invalid")
+	}
+
 	host := util.GetPaymentHost(service.Env)
 	url := host + "/card/checkout/charge"
 

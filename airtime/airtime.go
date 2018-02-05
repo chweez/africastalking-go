@@ -48,9 +48,10 @@ func (service Service) Send() (*Response, error) {
 		return nil, fmt.Errorf("unable to create request %v", err)
 	}
 
-	q := request.URL.Query()
-	q.Add("username", service.Username)
-	request.URL.RawQuery = q.Encode()
+	values := request.URL.Query()
+	values.Add("username", service.Username)
+	request.URL.RawQuery = values.Encode()
+
 	request.Header.Set("apikey", service.APIKey)
 	request.Header.Set("Accept", "application/json")
 

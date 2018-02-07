@@ -43,15 +43,12 @@ We invoke this function using the following code -  You can declare recipient an
 
 ```
 //Send SMS - REPLACE Recipient and Message with REAL Values
-recipients, err := smsService.Send("Recipient", "Message To Send", "")
+smsResponse, err := smsService.Send("Recipient", "Message To Send", "")
 if err != nil {
 	fmt.Println(err)
 }
 
-//For loop to log all the recipients
-for _, recipient := range recipients {
-	fmt.Println(recipient)
-}
+fmt.Println(smsResponse)
 ```
 
 This is the complete sample code. Try to understand how this works first!!!
@@ -81,10 +78,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	//For loop to log all the recipients
-	for _, recipient := range recipients {
-		fmt.Println(recipient)
-	}
+	fmt.Println(smsResponse)
 }
 
 ```

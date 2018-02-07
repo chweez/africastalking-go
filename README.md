@@ -5,7 +5,7 @@ The wrapper provides convenient access to the Africa's Talking API from applicat
 You can install the package by running:
 
 ```
-go get github.com/AndroidStudyOpenSource/africastalking-go
+go get github.com/AndroidStudyOpenSource/africastalking-go/sms
 
 go get github.com/AndroidStudyOpenSource/africastalking-go/airtime
 
@@ -31,10 +31,7 @@ We first need to create a Gateway using the constants declared above. We will us
 This is how we create the Gateway in our code:
 
 ```
-gateway, err := africastkng.NewGateway(username, apiKey, env)
-if err != nil {
-	log.Fatal(err)
-}
+smsService := sms.NewService(username, apiKey, env)
 ```
 
 ## SMS 
@@ -46,7 +43,7 @@ We invoke this function using the following code -  You can declare recipient an
 
 ```
 //Send SMS - REPLACE Recipient and Message with REAL Values
-recipients, err := gateway.SendSms("Recipient", "Message To Send")
+recipients, err := smsService.Send("Recipient", "Message To Send", "")
 if err != nil {
 	fmt.Println(err)
 }
@@ -65,7 +62,7 @@ import (
 	"fmt"
 	"log"
 
-	africastkng "github.com/AndroidStudyOpenSource/africastalking-go"
+	africastkng "github.com/AndroidStudyOpenSource/africastalking-go/sms"
 )
 
 const (
@@ -76,13 +73,10 @@ const (
 
 func main() {
 	//Call the Gateway, and pass the constants here!
-	gateway, err := africastkng.NewGateway(username, apiKey, env)
-	if err != nil {
-		log.Fatal(err)
-	}
+	smsService := sms.NewService(username, apiKey, env)
 
 	//Send SMS - REPLACE Recipient and Message with REAL Values
-	recipients, err := gateway.SendSms("Recipient", "Message To Send")
+	recipients, err := smsService.Send("Recipient", "Message To Send", "ShortCode" //Leave blank, "", if you don't have one)
 	if err != nil {
 		fmt.Println(err)
 	}

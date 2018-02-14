@@ -2,8 +2,8 @@ package sms
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -55,12 +55,11 @@ func (service Service) Send(from, to, message string) (*SendMessageResponse, err
 	if err != nil {
 		return nil, err
 	}
-
-	var smsMessageResponse SendMessageResponse
-	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
-	log.Println(res.Body)
 	defer res.Body.Close()
-
+	var smsMessageResponse SendMessageResponse
+	if err := json.NewDecoder(res.Body).Decode(&smsMessageResponse); err != nil {
+		return nil, errors.New("unable to parse sms response")
+	}
 	return &smsMessageResponse, nil
 }
 
@@ -88,17 +87,17 @@ func (service Service) SendBulk(from, to, message string, bulkMode int, enqueue 
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	var smsMessageResponse SendMessageResponse
 	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
-	defer res.Body.Close()
 
 	return &smsMessageResponse, nil
 }
 
 // SendPremium - POST
 func (service Service) SendPremium(username, to, from, message, keyword,
-linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error) {
+	linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error) {
 	values := url.Values{}
 	values.Set("username", username)
 	values.Set("to", to)
@@ -117,10 +116,10 @@ linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error)
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	var smsMessageResponse SendMessageResponse
 	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
-	defer res.Body.Close()
 
 	return &smsMessageResponse, nil
 }
@@ -136,10 +135,10 @@ func (service Service) FetchMessage(username, lastReceivedID string) (*FetchMess
 	if err != nil {
 		return nil, fmt.Errorf("could not get response: %v", err)
 	}
+	defer res.Body.Close()
 
 	var fmr FetchMessageResponse
 	json.NewDecoder(res.Body).Decode(&fmr)
-	defer res.Body.Close()
 
 	return &fmr, nil
 }

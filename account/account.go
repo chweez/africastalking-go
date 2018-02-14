@@ -1,11 +1,12 @@
 package account
 
 import (
-	"africastalking/util"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/AndroidStudyOpenSource/africastalking-go/util"
 )
 
 // Response is a model

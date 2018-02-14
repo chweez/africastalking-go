@@ -6,13 +6,14 @@ import (
 	"log"
 	"os"
 
+	"github.com/AndroidStudyOpenSource/africastalking-go/account"
 	"github.com/AndroidStudyOpenSource/africastalking-go/sms"
-	"africastalking/account"
 )
 
-const (
-	apiKey   = ""
-	username = ""
+var (
+	apiKey    = os.Getenv("AT_APIKEY")
+	username  = os.Getenv("AT_USERNAME")
+	shortcode = os.Getenv("AT_SHORTCODE")
 )
 
 func main() {
@@ -22,24 +23,28 @@ func main() {
 
 	flag.Parse()
 	if *recipient == "" || *message == "" {
-		log.Println("please enter recipient and message")
-		os.Exit(1)
+		log.Fatal("please enter all required arguments. see --help")
+	}
+
+	if apiKey == "" || username == "" {
+		log.Fatal("missing required environment variables: AT_APIKEY, AT_USERNAME")
 	}
 
 	smsService := sms.NewService(username, apiKey, *env)
-	// Entered at the commandline
-	sendResponse, err := smsService.Send("Me4u", *recipient, *message)
+
+	sendResponse, err := smsService.Send(shortcode, *recipient, *message)
 	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(sendResponse)
+		fmt.Printf("Failed to send sms: %v", err)
 	}
+	fmt.Printf("SMS Send reponse: %v\n", sendResponse)
 
 	accountService := account.NewService(username, apiKey, *env)
 	user, err := accountService.GetUser()
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Println(user)
+		return
 	}
+
+	fmt.Printf("User: %v\n", user)
+
 }

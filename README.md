@@ -13,6 +13,21 @@ go get github.com/AndroidStudyOpenSource/africastalking-go/account
 
 go get github.com/AndroidStudyOpenSource/africastalking-go/payment
 ```
+## Demo
+In order to run the demo, export the the following values to your environment. They can be found/generated at the Africa's Talking Dashboard.
+
+``` sh
+export AT_APIKEY=Your-AfricasTalking-API-KEY
+export AT_USERNAME=Your-AfricasTalking-APP-USERNAME
+export AT_SHORTCODE=Your-AfricasTalking-APP-Shortcode
+```
+
+That's all's that required. Assuming its a sandbox app, here's to run the demo:
+
+``` sh
+cd demo
+go run main.go -e sandbox -m "Hello gopher!" -r "+254700000000"
+```
 
 ## Usage
 The package needs to be configured with your app username and API key (which you can get from the dashboard). You can also declare if you are running in production or in sandbox.
@@ -59,7 +74,7 @@ import (
 	"fmt"
 	"log"
 
-	africastkng "github.com/AndroidStudyOpenSource/africastalking-go/sms"
+	"github.com/AndroidStudyOpenSource/africastalking-go/sms"
 )
 
 const (

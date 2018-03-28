@@ -180,10 +180,10 @@ func (service Service) CreateSubscription(username, shortCode, keyword, phoneNum
 	if err != nil {
 		return nil, fmt.Errorf("could not get response: %v", err)
 	}
+	defer res.Body.Close()
 
 	var subscriptionResponse SubscriptionResponse
 	json.NewDecoder(res.Body).Decode(&subscriptionResponse)
-	defer res.Body.Close()
 
 	return &subscriptionResponse, nil
 }

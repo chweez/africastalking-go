@@ -1,11 +1,11 @@
 package airtime
 
 import (
-	"africastalking/util"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
+	"github.com/AndroidStudyOpenSource/africastalking-go/util"
 )
 
 // Response is the reponse from the api
@@ -60,6 +60,7 @@ func (service Service) Send() (*Response, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not get rsponse %v", err)
 	}
+	defer response.Body.Close()
 
 	var airtimeResponse Response
 	json.NewDecoder(response.Body).Decode(&airtimeResponse)

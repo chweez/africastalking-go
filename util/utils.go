@@ -34,38 +34,43 @@ func GetVoiceHost(env string) string {
 	return getHost(env, "voice")
 }
 
-// GetVoiceUrl returns the voice endpoint
-func GetVoiceUrl(env string) string {
+// GetVoiceURL returns the voice endpoint
+func GetVoiceURL(env string) string {
 	return GetVoiceHost(env)
 }
 
-// GetSubscriptionUrl returns the Subscription endpoint
-func GetSubscriptionUrl(env string) string {
+// GetSubURL returns the Subscription endpoint
+func GetSubURL(env string) string {
 	return GetAPIHost(env) + "/version1/subscription"
 }
 
-// GetUserDataUrl returns the  user data endpoint
-func GetUserDataUrl(env string) string {
+// GetCreateSubURL returns the Subscription create endpoint
+func GetCreateSubURL(env string) string {
+	return GetAPIHost(env) + "/version1/subscription/create"
+}
+
+// GetUserDataURL returns the  user data endpoint
+func GetUserDataURL(env string) string {
 	return GetAPIHost(env) + "/version1/user"
 }
 
-// GetAirtimeUrl returns the airtime endpoint
-func GetAirtimeUrl(env string) string {
+// GetAirtimeURL returns the airtime endpoint
+func GetAirtimeURL(env string) string {
 	return GetAPIHost(env) + "/version1/airtime"
 }
 
-// GetMobilePaymentCheckoutUrl returns the mobile payments checkout endpoint
-func GetMobilePaymentCheckoutUrl(env string) string {
+// GetMobilePaymentCheckoutURL returns the mobile payments checkout endpoint
+func GetMobilePaymentCheckoutURL(env string) string {
 	return GetPaymentHost(env) + "/mobile/checkout/request"
 }
 
-// GetMobilePaymentB2BUrl returns the Mobile Payments B2B endpoint
-func GetMobilePaymentB2BUrl(env string) string {
+// GetMobilePaymentB2BURL returns the Mobile Payments B2B endpoint
+func GetMobilePaymentB2BURL(env string) string {
 	return GetPaymentHost(env) + "/mobile/b2b/request"
 }
 
-// GetMobilePaymentB2CUrl returns  the Mobile Payment B2C endpoint
-func GetMobilePaymentB2CUrl(env string) string {
+// GetMobilePaymentB2CURL returns  the Mobile Payment B2C endpoint
+func GetMobilePaymentB2CURL(env string) string {
 	return GetPaymentHost(env) + "/mobile/b2c/request"
 }
 

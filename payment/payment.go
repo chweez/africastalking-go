@@ -24,7 +24,7 @@ func NewService(username, apiKey, env string) Service {
 
 // RequestB2C sends a B2C request
 func (service Service) RequestB2C(body B2CRequest) (*B2CResponse, error) {
-	url := util.GetMobilePaymentB2CUrl(service.Env)
+	url := util.GetMobilePaymentB2CURL(service.Env)
 
 	reqBody, err := json.Marshal(body)
 	if err != nil {
@@ -44,7 +44,7 @@ func (service Service) RequestB2C(body B2CRequest) (*B2CResponse, error) {
 
 // RequestB2B sends a B2B request
 func (service Service) RequestB2B(body B2BRequest) (*B2BResponse, error) {
-	url := util.GetMobilePaymentB2BUrl(service.Env)
+	url := util.GetMobilePaymentB2BURL(service.Env)
 
 	reqBody, err := json.Marshal(body)
 	if err != nil {
@@ -64,7 +64,7 @@ func (service Service) RequestB2B(body B2BRequest) (*B2BResponse, error) {
 
 // MobileCheckout requests
 func (service Service) MobileCheckout(body MobileCheckoutRequest) (*CheckoutResponse, error) {
-	url := util.GetMobilePaymentCheckoutUrl(service.Env)
+	url := util.GetMobilePaymentCheckoutURL(service.Env)
 
 	reqBody, err := json.Marshal(body)
 	if err != nil {

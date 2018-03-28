@@ -97,7 +97,7 @@ func (service Service) SendBulk(from, to, message string, bulkMode int, enqueue 
 
 // SendPremium - POST
 func (service Service) SendPremium(username, to, from, message, keyword,
-	linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error) {
+linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error) {
 	values := url.Values{}
 	values.Set("username", username)
 	values.Set("to", to)
@@ -175,7 +175,7 @@ func (service Service) CreateSubscription(username, shortCode, keyword, phoneNum
 
 	headers := make(map[string]string)
 
-	apiURL := util.GetAPIHost(service.Env) + "/version1/subscription/create"
+	apiURL := util.GetCreateSubURL(service.Env)
 	res, err := service.newPostRequest(apiURL, values, headers)
 	if err != nil {
 		return nil, fmt.Errorf("could not get response: %v", err)

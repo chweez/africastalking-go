@@ -2,29 +2,30 @@
 The wrapper provides convenient access to the Africa's Talking API from applications written in server-side Golang. This is Work in Progress
 
 ## Installing
-You can install the package by running:
+You can install any of the packages as shown below:
 
-```
-// For sms
+### Sms
+``` sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/sms
 ```
-```
-// For airtime
+
+### Airtime
+``` sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/airtime
 ```
 
-```
-// For account
+### Account
+``` sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/account
 ```
 
-```
-// For payment
+### Payment
+``` sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/payment
 ```
 
-```
-For tokens
+### Tokens
+``` sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/token
 ```
 

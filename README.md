@@ -5,27 +5,27 @@ The wrapper provides convenient access to the Africa's Talking API from applicat
 You can install any of the packages as shown below:
 
 ### Sms
-``` sh
+```sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/sms
 ```
 
 ### Airtime
-``` sh
+```sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/airtime
 ```
 
 ### Account
-``` sh
+```sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/account
 ```
 
 ### Payment
-``` sh
+```sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/payment
 ```
 
 ### Tokens
-``` sh
+```sh
 go get github.com/AndroidStudyOpenSource/africastalking-go/token
 ```
 
@@ -48,7 +48,7 @@ go run main.go -e sandbox -m "Hello gopher!" -r "+254700000000"
 ## Usage
 The package needs to be configured with your app username and API key (which you can get from the dashboard). You can also declare if you are running in production or in sandbox.
 
-```
+```golang
 const (
 	apiKey = "YOUR_API_KEY"		    //Production or Sandbox API Key
 	username = "YOUR_USERNAME"	    //Your Africa's Talking Username
@@ -61,7 +61,7 @@ We first need to create a Gateway using the constants declared above. We will us
 
 This is how we create the Gateway in our code:
 
-```
+```golang
 smsService := sms.NewService(username, apiKey, env)
 ```
 
@@ -72,7 +72,7 @@ When sending a message, you need to pass the following data:
 
 We invoke this function using the following code -  You can declare recipient and message as variables for code neatness:
 
-```
+```golang
 //Send SMS - REPLACE Recipient and Message with REAL Values
 smsResponse, err := smsService.Send("Recipient", "Message To Send", "")
 if err != nil {
@@ -83,7 +83,7 @@ fmt.Println(smsResponse)
 ```
 
 This is the complete sample code. Try to understand how this works first!!!
-```
+```golang
 package main
 
 import (

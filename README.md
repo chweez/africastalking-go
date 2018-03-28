@@ -5,14 +5,29 @@ The wrapper provides convenient access to the Africa's Talking API from applicat
 You can install the package by running:
 
 ```
+// For sms
 go get github.com/AndroidStudyOpenSource/africastalking-go/sms
-
+```
+```
+// For airtime
 go get github.com/AndroidStudyOpenSource/africastalking-go/airtime
+```
 
+```
+// For account
 go get github.com/AndroidStudyOpenSource/africastalking-go/account
+```
 
+```
+// For payment
 go get github.com/AndroidStudyOpenSource/africastalking-go/payment
 ```
+
+```
+For tokens
+go get github.com/AndroidStudyOpenSource/africastalking-go/token
+```
+
 ## Demo
 In order to run the demo, export the the following values to your environment. They can be found/generated at the Africa's Talking Dashboard.
 

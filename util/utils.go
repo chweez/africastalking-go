@@ -74,6 +74,14 @@ func GetMobilePaymentB2CURL(env string) string {
 	return GetPaymentHost(env) + "/mobile/b2c/request"
 }
 
+func GetCreateCheckoutTokenURL(env string) string {
+	return GetAPIHost(env) + "/checkout/token/create"
+}
+
+func GetGenerateAuthTokenURL(env string) string {
+	return GetAPIHost(env) + "/auth-token/generate"
+}
+
 func getHost(env, service string) string {
 	if env != "sandbox" {
 		return fmt.Sprintf("https://%s.africastalking.com", service)

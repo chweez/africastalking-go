@@ -29,7 +29,7 @@ go get github.com/AndroidStudyOpenSource/africastalking-go/payment
 go get github.com/AndroidStudyOpenSource/africastalking-go/token
 ```
 
-## Demo
+### Demo
 In order to run the demo, export the the following values to your environment. They can be found/generated at the Africa's Talking Dashboard.
 
 ``` sh
@@ -45,7 +45,7 @@ cd demo
 go run main.go -e sandbox -m "Hello gopher!" -r "+254700000000"
 ```
 
-## Usage
+### Usage
 The package needs to be configured with your app username and API key (which you can get from the dashboard). You can also declare if you are running in production or in sandbox.
 
 ```golang
@@ -56,7 +56,7 @@ const (
 )
 ```
 
-## Creating the Gateway
+### Creating the Gateway
 We first need to create a Gateway using the constants declared above. We will use this Gateway to invoke Africa's Talking Services - SMS, Voice, Airtime, USSD.
 
 This is how we create the Gateway in our code:
@@ -65,7 +65,7 @@ This is how we create the Gateway in our code:
 smsService := sms.NewService(username, apiKey, env)
 ```
 
-## SMS 
+### SMS 
 When sending a message, you need to pass the following data:
 * **Recipient(s)** 
 * **Message** 
@@ -115,8 +115,41 @@ func main() {
 ```
 You can easily test this using [Postman](https://www.getpostman.com) or [Insomnia](https://insomnia.rest) Clients!
 
-## Contributing and Issues
+### Contributing and Issues
 
-Please feel free to contribute or open issues, if any and we will be happy to help out!
+We’re glad you’re interested in Africas Talking Golang SDK, and we’d love to see where you take it. If you would like to contribute code to this project you can do so through GitHub by Forking the Repository and creating a Pull Request.
+
+When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible. We look forward to you submitting a Pull Request.
+
+Use [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow).
+Always tag releases to `develop` and `master`.
+
+Thanks, and please do take it for a joyride!
+
+### License
+
+```text
+MIT License
+
+Copyright (c) 2018 Android Study Open Source
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 

@@ -1,11 +1,12 @@
 package account
 
 import (
-	"africastalking/util"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/AndroidStudyOpenSource/africastalking-go/util"
 )
 
 // Response is a model
@@ -51,7 +52,9 @@ func (service Service) GetUser() (*User, error) {
 		return nil, fmt.Errorf("could not get rsponse %v", err)
 	}
 
+	body := response.Body
 	var accountResponse Response
-	json.NewDecoder(response.Body).Decode(&accountResponse)
+	json.NewDecoder(body).Decode(&accountResponse)
+	defer body.Close()
 	return &accountResponse.User, nil
 }

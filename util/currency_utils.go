@@ -4,7 +4,7 @@ import "strings"
 import "fmt"
 import "strconv"
 
-// FromCurrencied converts a currencied amount
+// FromCurrencied converts a currencied amount to component currency sign and amount
 func FromCurrencied(currenciedAmount string) (string, float64, error) {
 	amount := strings.Split(strings.TrimSpace(currenciedAmount), " ")
 	if len(amount) != 2 {
@@ -13,8 +13,10 @@ func FromCurrencied(currenciedAmount string) (string, float64, error) {
 
 	currency, err := strconv.ParseFloat(amount[1], 64)
 	if err != nil {
-		return "", 0, nil
+		return "", 0, fmt.Errorf("could not get currency amount: %v", err)
 	}
 
-	return amount[0], currency, nil
+	currencySign := strings.ToUpper(amount[0])
+
+	return currencySign, currency, nil
 }

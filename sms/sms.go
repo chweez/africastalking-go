@@ -2,70 +2,21 @@ package sms
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
-	"africastalking/util"
+	"github.com/AndroidStudyOpenSource/africastalking-go/util"
 )
 
-// SendMessageResponse is a model
-type SendMessageResponse struct {
-	SMS SMS2 `json:"SMSMessageData"`
-}
-
-// SMS2 is a model
-type SMS2 struct {
-	Recipients []Recipient `json:"recipients"`
-}
-
-// SubscriptionResponse is a model
-type SubscriptionResponse struct {
-	Success     string `json:"success"`
-	Description string `json:"description"`
-}
-
-// FetchMessageResponse is a model
-type FetchMessageResponse struct {
-	SMS SMS `json:"SMSMessageData"`
-}
-
-// SMS is a model
-type SMS struct {
-	Messages []Message `json:"Recipients"`
-}
-
-// Message is a model
-type Message struct {
-	From   string `json:"from"`
-	To     string `json:"to"`
-	Text   string `json:"text"`
-	LinkID string `json:"linkId"`
-	Date   string `json:"date"`
-	ID     int64  `json:"id"`
-}
-
-// FetchSubscriptionResponse is a model
-type FetchSubscriptionResponse struct {
-	Subscriptions []Subscription
-}
-
-// Subscription is a model
-type Subscription struct {
-	ID          int64  `json:"id"`
-	PhoneNumber string `json:"phoneNumber"`
-	Date        string `json:"date"`
-}
-
-// Recipient is a model
-type Recipient struct {
-	Number    string `json:"number"`
-	Cost      string `json:"cost"`
-	Status    string `json:"status"`
-	MessageID string `json:"messageId"`
-}
+const (
+	Sandbox = "sandbox"
+	Prod    = "production"
+)
 
 // Service is a model
 type Service struct {
@@ -75,8 +26,8 @@ type Service struct {
 }
 
 // NewService returns a new service
-func NewService() Service {
-	return Service{}
+func NewService(username, apiKey, env string) Service {
+	return Service{username, apiKey, env}
 }
 
 // SendToMany is a utility method to send to many recipients at the same time
@@ -90,22 +41,25 @@ func (service Service) Send(from, to, message string) (*SendMessageResponse, err
 	values := url.Values{}
 	values.Set("username", service.Username)
 	values.Set("to", to)
-	values.Set("from", from)
 	values.Set("message", message)
+	if from != "" {
+		// set from = "" to avoid this
+		values.Set("from", from)
+	}
 
-	url := util.GetSmsURL(service.Env)
+	smsURL := util.GetSmsURL(service.Env)
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-	res, err := service.newPostRequest(url, values, headers)
+	res, err := service.newPostRequest(smsURL, values, headers)
 	if err != nil {
 		return nil, err
 	}
-
-	var smsMessageResponse SendMessageResponse
-	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
 	defer res.Body.Close()
-
+	var smsMessageResponse SendMessageResponse
+	if err := json.NewDecoder(res.Body).Decode(&smsMessageResponse); err != nil {
+		return nil, errors.New("unable to parse sms response")
+	}
 	return &smsMessageResponse, nil
 }
 
@@ -125,25 +79,25 @@ func (service Service) SendBulk(from, to, message string, bulkMode int, enqueue 
 	values.Set("bulkMode", string(bulkMode))
 	values.Set("enqueue", enqueue)
 
-	url := util.GetSmsURL(service.Env)
+	smsURL := util.GetSmsURL(service.Env)
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-	res, err := service.newPostRequest(url, values, headers)
+	res, err := service.newPostRequest(smsURL, values, headers)
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	var smsMessageResponse SendMessageResponse
 	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
-	defer res.Body.Close()
 
 	return &smsMessageResponse, nil
 }
 
 // SendPremium - POST
 func (service Service) SendPremium(username, to, from, message, keyword,
-	linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error) {
+linkID, retryDurationInHours string, bulkMode int) (*SendMessageResponse, error) {
 	values := url.Values{}
 	values.Set("username", username)
 	values.Set("to", to)
@@ -154,51 +108,51 @@ func (service Service) SendPremium(username, to, from, message, keyword,
 	values.Set("linkId", linkID)
 	values.Set("retryDurationInHours", retryDurationInHours)
 
-	url := util.GetSmsURL(service.Env)
+	smsURL := util.GetSmsURL(service.Env)
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-	res, err := service.newPostRequest(url, values, headers)
+	res, err := service.newPostRequest(smsURL, values, headers)
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	var smsMessageResponse SendMessageResponse
 	json.NewDecoder(res.Body).Decode(&smsMessageResponse)
-	defer res.Body.Close()
 
 	return &smsMessageResponse, nil
 }
 
 // FetchMessage - username = query
 func (service Service) FetchMessage(username, lastReceivedID string) (*FetchMessageResponse, error) {
-	url := util.GetAPIHost(service.Env)
+	apiURL := util.GetAPIHost(service.Env)
 	queries := make(map[string]string)
 	queries["username"] = username
 	queries["lastReceivedID"] = lastReceivedID
 
-	res, err := service.newGetRequest(url, queries)
+	res, err := service.newGetRequest(apiURL, queries)
 	if err != nil {
 		return nil, fmt.Errorf("could not get response: %v", err)
 	}
+	defer res.Body.Close()
 
 	var fmr FetchMessageResponse
 	json.NewDecoder(res.Body).Decode(&fmr)
-	defer res.Body.Close()
 
 	return &fmr, nil
 }
 
 // FetchSubscription - query
 func (service Service) FetchSubscription(username, shortCode, keyword, lastReceivedID string) (*FetchSubscriptionResponse, error) {
-	url := util.GetAPIHost(service.Env) + "/version1/subscription"
+	apiURL := util.GetAPIHost(service.Env) + "/version1/subscription"
 	queries := make(map[string]string)
 	queries["username"] = username
 	queries["shortCode"] = shortCode
 	queries["keyword"] = keyword
 	queries["lastReceivedID"] = lastReceivedID
 
-	res, err := service.newGetRequest(url, queries)
+	res, err := service.newGetRequest(apiURL, queries)
 	if err != nil {
 		return nil, fmt.Errorf("could not get response: %v", err)
 	}
@@ -221,21 +175,23 @@ func (service Service) CreateSubscription(username, shortCode, keyword, phoneNum
 
 	headers := make(map[string]string)
 
-	url := util.GetAPIHost(service.Env) + "/version1/subscription/create"
-	res, err := service.newPostRequest(url, values, headers)
+	apiURL := util.GetCreateSubURL(service.Env)
+	res, err := service.newPostRequest(apiURL, values, headers)
 	if err != nil {
 		return nil, fmt.Errorf("could not get response: %v", err)
 	}
-
-	var subsciprionResponse SubscriptionResponse
-	json.NewDecoder(res.Body).Decode(&subsciprionResponse)
 	defer res.Body.Close()
 
-	return &subsciprionResponse, nil
+	var subscriptionResponse SubscriptionResponse
+	json.NewDecoder(res.Body).Decode(&subscriptionResponse)
+
+	return &subscriptionResponse, nil
 }
 
 func (service Service) newPostRequest(url string, values url.Values, headers map[string]string) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodPost, url, strings.NewReader(values.Encode()))
+	reader := strings.NewReader(values.Encode())
+
+	req, err := http.NewRequest(http.MethodPost, url, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -243,6 +199,9 @@ func (service Service) newPostRequest(url string, values url.Values, headers map
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
+	req.Header.Set("Content-Length", strconv.Itoa(reader.Len()))
+	req.Header.Set("apikey", service.APIKey)
+	req.Header.Set("Accept", "application/json")
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	return client.Do(req)
@@ -258,7 +217,13 @@ func (service Service) newGetRequest(url string, queries map[string]string) (*ht
 	for key, value := range queries {
 		values.Add(key, value)
 	}
-	req.URL.RawQuery = values.Encode()
+
+	if len(values) > 0 {
+		req.URL.RawQuery = values.Encode()
+	}
+
+	req.Header.Set("apikey", service.APIKey)
+	req.Header.Set("Accept", "application/json")
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	return client.Do(req)

@@ -6,12 +6,14 @@ import (
 	"log"
 	"os"
 
-	africastkng "github.com/AndroidStudyOpenSource/africastalking-go"
+	"github.com/AndroidStudyOpenSource/africastalking-go/account"
+	"github.com/AndroidStudyOpenSource/africastalking-go/sms"
 )
 
-const (
-	apiKey   = ""
-	username = ""
+var (
+	apiKey    = os.Getenv("AT_APIKEY")
+	username  = os.Getenv("AT_USERNAME")
+	shortcode = os.Getenv("AT_SHORTCODE")
 )
 
 func main() {
@@ -21,24 +23,28 @@ func main() {
 
 	flag.Parse()
 	if *recipient == "" || *message == "" {
-		log.Println("please enter recipient and message")
-		os.Exit(1)
+		log.Fatal("please enter all required arguments. see --help")
 	}
 
-	//Call the Gateway, and pass the constants here!
-	gateway, err := africastkng.NewGateway(username, apiKey, *env)
+	if apiKey == "" || username == "" {
+		log.Fatal("missing required environment variables: AT_APIKEY, AT_USERNAME")
+	}
+
+	smsService := sms.NewService(username, apiKey, *env)
+
+	sendResponse, err := smsService.Send(shortcode, *recipient, *message)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("Failed to send sms: %v", err)
 	}
+	fmt.Printf("SMS Send reponse: %v\n", sendResponse)
 
-	// Entered at the commandline
-	recipients, err := gateway.SendSms(*recipient, *message)
+	accountService := account.NewService(username, apiKey, *env)
+	user, err := accountService.GetUser()
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
-	//For loop to log all the recipients
-	for _, recipient := range recipients {
-		fmt.Println(recipient)
-	}
+	fmt.Printf("User: %v\n", user)
+
 }
